@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta a Expertos - Capacitación en Hoteles Patrimoniales</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b5 100%);
+            color: #2c1810;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2E5C8A 0%, #1a3a5c 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 16px 16px 0 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: #D4A373;
+            color: #2c1810;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #f0e6d8;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: #2E5C8A;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #D4A373;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c1810;
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: ' *';
+            color: #c0392b;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0d5c5;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: #faf8f5;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #D4A373;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-item,
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: #faf8f5;
+            border: 2px solid #e0d5c5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .radio-item:hover,
+        .checkbox-item:hover {
+            background: #f5efe6;
+            border-color: #D4A373;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: #2E5C8A;
+            cursor: pointer;
+        }
+
+        .radio-item label,
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .conditional-section {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: #f8f4ef;
+            border-radius: 8px;
+            border-left: 4px solid #D4A373;
+        }
+
+        .conditional-section.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .other-input {
+            margin-top: 8px;
+            margin-left: 30px;
+            display: none;
+        }
+
+        .other-input.active {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2E5C8A 0%, #1a3a5c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 92, 138, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-message h2 {
+            color: #2E5C8A;
+            margin-bottom: 15px;
+        }
+
+        .privacy-note {
+            background: #f0f7ff;
+            border: 1px solid #2E5C8A;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            color: #1a3a5c;
+        }
+
+        .privacy-note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .form-body {
+                padding: 25px 20px;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0d5c5;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D4A373, #2E5C8A);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🏛️ Encuesta a Expertos</h1>
+        <p class="subtitle">
+            Estrategia de capacitación en hoteles de La Habana Vieja, enfocada en el destino cultural y patrimonial.<br>
+            Investigación de maestría sobre capacitación en espacios patrimoniales en el sector hotelero.
+        </p>
+        <span class="badge">⏱️ 5-7 minutos • Anónima</span>
+    </div>
+
+    <div class="form-body" id="surveyForm">
+        <div class="privacy-note">
+            <strong>🔒 Confidencialidad garantizada</strong>
+            Esta encuesta es completamente anónima. No se solicita nombre ni correo electrónico. 
+            Agradecemos su opinión sincera desde la experiencia.
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <!-- SECCIÓN 1: Perfil del Experto -->
+        <div class="section">
+            <h2 class="section-title">1. Perfil del Experto</h2>
+            
+            <div class="form-group">
+                <label for="experiencia" class="required">¿Cuántos años de experiencia tiene en el sector turístico o patrimonial de La Habana Vieja?</label>
+                <select id="experiencia" name="experiencia" required>
+                    <option value="">Seleccione una opción...</option>
+                    <option value="menos2">Menos de 2 años</option>
+                    <option value="2a5">De 2 a 5 años</option>
+                    <option value="5a10">De 5 a 10 años</option>
+                    <option value="mas10">Más de 10 años</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="required">¿Su experiencia principal está en...?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="exp_gestion" name="experiencia_principal" value="gestion_hotelera" required>
+                        <label for="exp_gestion">Gestión hotelera</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp_capacitacion" name="experiencia_principal" value="capacitacion">
+                        <label for="exp_capacitacion">Capacitación / formación</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp_cultural" name="experiencia_principal" value="gestion_cultural">
+                        <label for="exp_cultural">Gestión cultural / patrimonial</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp_docencia" name="experiencia_principal" value="docencia">
+                        <label for="exp_docencia">Docencia universitaria (UH, Formatur)</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp_otra" name="experiencia_principal" value="otra">
+                        <label for="exp_otra">Otra:</label>
+                    </div>
+                </div>
+                <input type="text" id="exp_otra_texto" class="other-input" placeholder="Especifique..." style="margin-top: 10px;">
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: Conocimiento del Patrimonio -->
+        <div class="section">
+            <h2 class="section-title">2. Conocimiento del Patrimonio</h2>
+            
+            <div class="form-group">
+                <label class="required">En su experiencia, ¿los colaboradores de hoteles en La Habana Vieja conocen la historia y el valor de los edificios donde trabajan?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="conoc_si" name="conocimiento" value="si_bastante" required>
+                        <label for="conoc_si">Sí, bastante bien</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="conoc_masomenos" name="conocimiento" value="mas_o_menos">
+                        <label for="conoc_masomenos">Más o menos, lo básico</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="conoc_poco" name="conocimiento" value="muy_poco">
+                        <label for="conoc_poco">Muy poco, solo lo que dice un cartel o un folleto</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="conoc_no" name="conocimiento" value="no_casi_nada">
+                        <label for="conoc_no">No, casi nada</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="porque_ocurre">¿Por qué cree que ocurre eso?</label>
+                <textarea id="porque_ocurre" name="porque_ocurre" placeholder="Describa brevemente las causas que observa..." maxlength="500"></textarea>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: Capacitaciones Actuales -->
+        <div class="section">
+            <h2 class="section-title">3. Capacitaciones Actuales</h2>
+            
+            <div class="form-group">
+                <label class="required">¿Cree que las capacitaciones actuales (las que da Gaviota, el MINTUR u otras entidades) logran que el personal se apropie del patrimonio, o solo proporcionan información fragmentada?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="cap_apropiacion" name="capacitaciones" value="apropiacion" required>
+                        <label for="cap_apropiacion">Sí, logran apropiación de gestión cultural y patrimonial</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="cap_poco" name="capacitaciones" value="muy_poco">
+                        <label for="cap_poco">Muy poco, solo elementos generales</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="cap_fragmentada" name="capacitaciones" value="fragmentada">
+                        <label for="cap_fragmentada">No, solo información fragmentada</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="cap_nose" name="capacitaciones" value="no_se">
+                        <label for="cap_nose">No sé, no las conozco bien</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ejemplo_capacitacion">Si recuerda algún ejemplo, escríbalo brevemente:</label>
+                <textarea id="ejemplo_capacitacion" name="ejemplo_capacitacion" placeholder="Describa un ejemplo concreto de capacitación que haya observado..."></textarea>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: Brechas y Necesidades -->
+        <div class="section">
+            <h2 class="section-title">4. Brechas y Necesidades</h2>
+            
+            <div class="form-group">
+                <label class="required">¿Qué aspectos patrimoniales cree que les faltan más a los colaboradores que trabajan en el Centro Histórico? <em>(Puede marcar varias)</em></label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aspect_fechas" name="aspectos" value="fechas_historicos">
+                        <label for="aspect_fechas">Conocimiento de fechas y datos históricos</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aspect_historias" name="aspectos" value="contar_historias">
+                        <label for="aspect_historias">Saber contar historias, no solo repetir datos</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aspect_respeto" name="aspectos" value="respeto_cuidado">
+                        <label for="aspect_respeto">Respeto y cuidado por el patrimonio (no apoyarse en paredes antiguas, no dejar basura, etc.)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aspect_recomendar" name="aspectos" value="recomendar_lugares">
+                        <label for="aspect_recomendar">Capacidad de recomendar lugares auténticos fuera de los circuitos turísticos</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aspect_otras" name="aspectos" value="otras">
+                        <label for="aspect_otras">Otras:</label>
+                    </div>
+                </div>
+                <input type="text" id="aspect_otras_texto" class="other-input" placeholder="¿Cuáles?" style="margin-top: 10px;">
+            </div>
+        </div>
+
+        <!-- SECCIÓN 5: Recursos Humanos y Gestión Cultural -->
+        <div class="section">
+            <h2 class="section-title">5. Recursos Humanos y Gestión Cultural</h2>
+            
+            <div class="form-group">
+                <label class="required">¿Existen guías o gestores culturales en las UEB de hoteles patrimoniales?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="guias_ambos" name="guias" value="guias_y_gestores" required onchange="toggleConditional()">
+                        <label for="guias_ambos">Sí, guías y gestores</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="guias_solo" name="guias" value="solo_guias" onchange="toggleConditional()">
+                        <label for="guias_solo">Solo guías</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="guias_gestores" name="guias" value="solo_gestores" onchange="toggleConditional()">
+                        <label for="guias_gestores">Solo gestores culturales</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="guias_no" name="guias" value="no_existen" onchange="toggleConditional()">
+                        <label for="guias_no">No existen</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="guias_nose" name="guias" value="no_se" onchange="toggleConditional()">
+                        <label for="guias_nose">No sé</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta condicional -->
+            <div id="conditionalQuestion" class="conditional-section">
+                <div class="form-group">
+                    <label>Si existen, ¿trabajan con el personal de base o solo atienden a turistas extranjeros?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="trabajan_todos" name="trabajo_guias" value="con_todo_personal">
+                            <label for="trabajan_todos">Con todo el personal</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="trabajan_turistas" name="trabajo_guias" value="solo_turistas">
+                            <label for="trabajan_turistas">Solo con turistas</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="trabajan_nose" name="trabajo_guias" value="no_se">
+                            <label for="trabajan_nose">No sé</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 6: Competencias del Personal -->
+        <div class="section">
+            <h2 class="section-title">6. Competencias del Personal</h2>
+            
+            <div class="form-group">
+                <label class="required">¿Los colaboradores saben manejar conflictos o preguntas inesperadas de los turistas?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="conflictos_si" name="conflictos" value="mayoria_sabe" required>
+                        <label for="conflictos_si">Sí, la mayoría sabe manejarlo bien</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="conflictos_algunos" name="conflictos" value="algunos_si">
+                        <label for="conflictos_algunos">Algunos sí, otros no</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="conflictos_no" name="conflictos" value="mayoria_no">
+                        <label for="conflictos_no">No, la mayoría se bloquea o responde mal</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="conflictos_nose" name="conflictos" value="no_se">
+                        <label for="conflictos_nose">No sé</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">¿Se organizan en los hoteles recorridos o experiencias que vinculen la historia con la vida cotidiana actual?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="recorridos_si" name="recorridos" value="frecuencia" required>
+                        <label for="recorridos_si">Sí, con frecuencia</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="recorridos_poco" name="recorridos" value="a_veces">
+                        <label for="recorridos_poco">A veces, pero poco</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="recorridos_no" name="recorridos" value="casi_nunca">
+                        <label for="recorridos_no">No, casi nunca</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="recorridos_nose" name="recorridos" value="no_se">
+                        <label for="recorridos_nose">No sé</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 7: Formación Académica -->
+        <div class="section">
+            <h2 class="section-title">7. Formación Académica</h2>
+            
+            <div class="form-group">
+                <label class="required">¿La Universidad de La Habana o Formatur tienen módulos o cursos específicos sobre "interpretación del patrimonio" o "animación patrimonial"?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="univ_varios" name="universidad" value="varios" required>
+                        <label for="univ_varios">Sí, varios</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="univ_pocos" name="universidad" value="muy_pocos">
+                        <label for="univ_pocos">Muy pocos</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="univ_no" name="universidad" value="no_que_yo_sepa">
+                        <label for="univ_no">No, que yo sepa</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="univ_nose" name="universidad" value="no_se">
+                        <label for="univ_nose">No sé</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cursos_conocidos">Si conoce alguno, escríbalo aquí:</label>
+                <textarea id="cursos_conocidos" name="cursos_conocidos" placeholder="Nombre del curso, institución y breve descripción..."></textarea>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 8: Recomendaciones -->
+        <div class="section">
+            <h2 class="section-title">8. Recomendaciones</h2>
+            
+            <div class="form-group">
+                <label for="recomendaciones" class="required">¿Qué aspectos recomendaría en una capacitación para colaboradores de hoteles patrimoniales?</label>
+                <textarea id="recomendaciones" name="recomendaciones" required minlength="50" maxlength="1000" placeholder="Sea específico: temas, metodologías, duración, frecuencia..."></textarea>
+                <small style="color: #666; display: block; margin-top: 5px;">Mínimo 50 caracteres</small>
+            </div>
+
+            <div class="form-group">
+                <label for="comentarios_adicionales">¿Algo más que quiera agregar?</label>
+                <textarea id="comentarios_adicionales" name="comentarios_adicionales" placeholder="Comentarios adicionales, sugerencias o observaciones..."></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn" onclick="submitForm(event)">
+            Enviar Encuesta
+        </button>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div class="success-message" id="successMessage">
+        <div class="success-icon">✅</div>
+        <h2>¡Muchas gracias por su tiempo!</h2>
+        <p>Sus respuestas contribuyen a mejorar la formación, lo cual beneficia a los colaboradores, a los turistas y al patrimonio.</p>
+        <p style="margin-top: 20px; color: #666; font-size: 0.9rem;">
+            Puede cerrar esta ventana o <a href="#" onclick="location.reload()" style="color: #2E5C8A;">responder otra encuesta</a>.
+        </p>
+    </div>
+</div>
+
+<script>
+    // Mostrar/ocultar campo "Otra" en experiencia principal
+    document.querySelectorAll('input[name="experiencia_principal"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const otherInput = document.getElementById('exp_otra_texto');
+            if (this.value === 'otra') {
+                otherInput.classList.add('active');
+                otherInput.required = true;
+            } else {
+                otherInput.classList.remove('active');
+                otherInput.required = false;
+                otherInput.value = '';
+            }
+        });
+    });
+
+    // Mostrar/ocultar campo "Otras" en aspectos
+    document.getElementById('aspect_otras').addEventListener('change', function() {
+        const otherInput = document.getElementById('aspect_otras_texto');
+        if (this.checked) {
+            otherInput.classList.add('active');
+            otherInput.required = true;
+        } else {
+            otherInput.classList.remove('active');
+            otherInput.required = false;
+            otherInput.value = '';
+        }
+    });
+
+    // Lógica condicional para pregunta de guías
+    function toggleConditional() {
+        const selected = document.querySelector('input[name="guias"]:checked');
+        const conditional = document.getElementById('conditionalQuestion');
+        
+        if (selected && ['guias_y_gestores', 'solo_guias', 'solo_gestores'].includes(selected.value)) {
+            conditional.classList.add('active');
+        } else {
+            conditional.classList.remove('active');
+            // Limpiar selección condicional
+            document.querySelectorAll('input[name="trabajo_guias"]').forEach(r => r.checked = false);
+        }
+    }
+
+    // Barra de progreso
+    function updateProgress() {
+        const form = document.getElementById('surveyForm');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        let filled = 0;
+        let total = 0;
+        
+        inputs.forEach(input => {
+            if (input.type === 'radio' || input.type === 'checkbox') {
+                const name = input.name;
+                if (!document.querySelectorAll(`input[name="${name}"]:checked`).length === 0) return;
+                if (input.checked) filled++;
+            } else if (input.value.trim() !== '') {
+                filled++;
+            }
+            total++;
+        });
+        
+        const progress = (filled / total) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+    }
+
+    document.getElementById('surveyForm').addEventListener('change', updateProgress);
+    document.getElementById('surveyForm').addEventListener('input', updateProgress);
+
+    // Envío del formulario
+    function submitForm(e) {
+        e.preventDefault();
+        
+        // Validar campos requeridos
+        const requiredRadios = ['experiencia', 'experiencia_principal', 'conocimiento', 'capacitaciones', 'aspectos', 'guias', 'conflictos', 'recorridos', 'universidad'];
+        let valid = true;
+        
+        // Validar select
+        if (!document.getElementById('experiencia').value) {
+            valid = false;
+            document.getElementById('experiencia').style.borderColor = '#c0392b';
+        }
+        
+        // Validar radio buttons
+        requiredRadios.forEach(name => {
+            if (!document.querySelector(`input[name="${name}"]:checked`)) {
+                valid = false;
+            }
+        });
+
+        // Validar textarea recomendaciones
+        const rec = document.getElementById('recomendaciones');
+        if (rec.value.trim().length < 50) {
+            valid = false;
+            rec.style.borderColor = '#c0392b';
+        }
+
+        if (!valid) {
+            alert('Por favor, complete todos los campos obligatorios marcados con *.\nAsegúrese de que la recomendación tenga al menos 50 caracteres.');
+            return;
+        }
+
+        // Aquí normalmente enviarías los datos a un servidor
+        // Por ahora, simulamos el envío exitoso
+        
+        // Recopilar datos (para demostración)
+        const formData = new FormData(document.getElementById('surveyForm'));
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            if (data[key]) {
+                if (Array.isArray(data[key])) {
+                    data[key].push(value);
+                } else {
+                    data[key] = [data[key], value];
+                }
+            } else {
+                data[key] = value;
+            }
+        }
+        
+        console.log('Datos de la encuesta:', data);
+        
+        // Mostrar mensaje de éxito
+        document.getElementById('surveyForm').style.display = 'none';
+        document.getElementById('successMessage').classList.add('active');
+        
+        // Scroll al inicio
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Prevenir envío con Enter en textareas
+    document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.stopPropagation();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
